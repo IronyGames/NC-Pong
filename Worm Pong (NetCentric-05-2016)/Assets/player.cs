@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class leftPlayer : MonoBehaviour
+public class Player : MonoBehaviour
 {
 	private bool isUp, isDown;
 	private float speed, acceleration;
 	public float accelerationIncrement, friction, maxSpeed, maxAcceleration, minSpeedThreshold;
 	public KeyCode upKey, downKey;
+	public string inputAxisUsed;
 	// Use this for initialization
 
 	private bool DEBUG = false;

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ball : MonoBehaviour
+public class Ball : MonoBehaviour
 {
 	private Vector2 direction;
 	public float speed;
