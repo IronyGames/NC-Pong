@@ -10,7 +10,7 @@ public class Ball : MonoBehaviour
 	public int scoreToWin;
 	// Use this for initialization
 
-	private bool DEBUG = true;
+	private bool DEBUG = false;
 
 	void Start ()
 	{
