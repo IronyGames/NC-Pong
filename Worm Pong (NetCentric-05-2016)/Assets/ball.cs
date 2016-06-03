@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ball : MonoBehaviour
+public class Ball : MonoBehaviour
 {
 	private Vector2 direction;
 	public float speed;
@@ -10,7 +10,7 @@ public class ball : MonoBehaviour
 	public int scoreToWin;
 	// Use this for initialization
 
-	private bool DEBUG = true;
+	private bool DEBUG = false;
 
 	void Start ()
 	{

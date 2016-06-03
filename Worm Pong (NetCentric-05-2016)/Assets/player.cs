@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class leftPlayer : MonoBehaviour
+public class Player : MonoBehaviour
 {
 	private bool isUp, isDown;
 	private float speed, acceleration;
 	public float accelerationIncrement, friction, maxSpeed, maxAcceleration, minSpeedThreshold;
 	public KeyCode upKey, downKey;
+	public string inputAxisUsed;
+
 	// Use this for initialization
 
 	private bool DEBUG = false;
@@ -23,16 +25,21 @@ public class leftPlayer : MonoBehaviour
 
 	private void evauluateInput ()
 	{
-		if (Input.GetKeyDown (upKey)) {
-			isUp = true;
-		} else if (Input.GetKeyUp (upKey)) {
-			isUp = false;
+		float axis = Input.GetAxisRaw (inputAxisUsed);
+
+		if (DEBUG == true) {
+			print ("Axis: " + axis);
 		}
-		if (Input.GetKeyDown (downKey)) {
+
+		isUp = false;
+		isDown = false;
+
+		if (axis == 1) {
+			isUp = true;
+		} else if (axis == -1) {
 			isDown = true;
-		} else if (Input.GetKeyUp (downKey)) {
-			isDown = false;
-		} 
+		}
+
 	}
 
 	private void calculateKinematics ()
