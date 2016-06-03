@@ -5,6 +5,7 @@ public class ScoreBoard : MonoBehaviour
 {
 
 	private int score;
+	public static int winScore;
 
 	// Use this for initialization
 	void Start ()
@@ -21,4 +22,10 @@ public class ScoreBoard : MonoBehaviour
 	{
 		score = 0;
 	}
+
+	public int getScore ()
+	{
+		return score;
+	}
+		
 }

@@ -8,7 +8,8 @@ public class Ball : MonoBehaviour
 	public float bounceSpeedIncrement;
 	public float maxSpeed;
 	public int scoreToWin;
-	// Use this for initialization
+
+	public ScoreBoard left, right;
 
 	private bool DEBUG = false;
 
@@ -16,12 +17,12 @@ public class Ball : MonoBehaviour
 	{
 		resetBall ();
 	}
-	
-	// Update is called once per frame
+
+
 	void Update ()
 	{
 		if (this.DEBUG == true) {
-			//print (", Speed: " + direction.ToString ());
+			print (", Speed: " + direction.ToString ());
 		
 		}
 	}
@@ -95,17 +96,16 @@ public class Ball : MonoBehaviour
 		GetComponent<Rigidbody2D> ().transform.position = new Vector2 (0, 0);
 		direction = new Vector2 (-speed, 0);
 		setDirection ();
-		//scoreBoard.reset ();
 	}
 
 	private void addPointToLeft ()
 	{
-		//scoreBoard.scoreLeft ();
+		left.addScore ();
 	}
 
 	private void addPointToRight ()
 	{
-		//scoreBoard.scoreRight ();
+		right.addScore ();
 	}
 
 	private void setDirection ()
