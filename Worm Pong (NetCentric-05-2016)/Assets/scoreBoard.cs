@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class ScoreBoard : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class ScoreBoard : MonoBehaviour
 	public void addScore ()
 	{
 		score++;
+		GetComponent<Text> ().text = score.ToString ();
 	}
 
 	public void reset ()
