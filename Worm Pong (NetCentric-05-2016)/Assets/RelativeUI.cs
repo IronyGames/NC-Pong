@@ -21,10 +21,10 @@ public class RelativeUI : MonoBehaviour
 		Vector2 actualPosition = calculateActualVector (positionUnary, screenSize);
 
 		//print (this.name + ": " + actualPosition.x + "," + actualPosition.y + " of screen: " + screenSize.x + "," + screenSize.y);
+		this.transform.position.Set (actualPosition.x, actualPosition.y, 0);
 		print (this.name + ": " + GetComponent<RectTransform> ().position.ToString ());
 		GetComponent<RectTransform> ().position.Set (actualPosition.x, actualPosition.y, 0);
 		print (this.name + ": " + GetComponent<RectTransform> ().position.ToString ());
-
 
 	}
 

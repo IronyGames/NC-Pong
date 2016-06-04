@@ -71,9 +71,6 @@ public class Ball : MonoBehaviour
 
 			direction.y = paddlePart * Mathf.Abs (direction.x) * 10;
 		}
-
-		setDirection ();
-			
 	}
 
 	private float calculateBounceIncrementAndDirectionChange (float direction, float increment)
@@ -99,7 +96,6 @@ public class Ball : MonoBehaviour
 	{
 		GetComponent<Rigidbody2D> ().transform.position = new Vector2 (0, 0);
 		direction = new Vector2 (-speed, 0);
-		setDirection ();
 	}
 
 	private void addPointToLeft ()
@@ -112,7 +108,7 @@ public class Ball : MonoBehaviour
 		right.addScore ();
 	}
 
-	private void setDirection ()
+	void FixedUpdate ()
 	{
 		GetComponent<Rigidbody2D> ().velocity = direction;
 	}

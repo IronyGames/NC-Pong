@@ -17,17 +17,23 @@ public class ScoreBoard : MonoBehaviour
 	public void addScore ()
 	{
 		score++;
-		GetComponent<Text> ().text = score.ToString ();
+		updateText ();
 	}
 
 	public void reset ()
 	{
 		score = 0;
+		updateText ();
 	}
 
 	public int getScore ()
 	{
 		return score;
+	}
+
+	private void updateText ()
+	{
+		GetComponent<Text> ().text = score.ToString ();
 	}
 		
 }
