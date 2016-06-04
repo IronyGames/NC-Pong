@@ -71,13 +71,13 @@ public class Player : MonoBehaviour
 		if (speed < minSpeedThreshold && speed > -minSpeedThreshold) {
 			speed = 0;
 		}
+			
+		GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, speed);
 
 		if (this.DEBUG == true) {
 			print ("Acceleration: " + acceleration + ", Speed: " + speed + ", Position: " + transform.position.y);
 		}
 	}
-
-
 
 	private void OnTriggerEnter2D (Collider2D other)
 	{
@@ -88,7 +88,8 @@ public class Player : MonoBehaviour
 	{
 
 	}
-
+	
+	// Update is called once per frame
 	void Update ()
 	{
 		evauluateInput ();
@@ -96,9 +97,5 @@ public class Player : MonoBehaviour
 		evaluateWallTriggers ();
 	}
 
-	void FixedUpdate ()
-	{
-		GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, speed);
-	}
 
 }

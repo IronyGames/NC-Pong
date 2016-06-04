@@ -8,8 +8,7 @@ public class Ball : MonoBehaviour
 	public float bounceSpeedIncrement;
 	public float maxSpeed;
 	public int scoreToWin;
-
-	public ScoreBoard left, right;
+	// Use this for initialization
 
 	private bool DEBUG = false;
 
@@ -17,12 +16,12 @@ public class Ball : MonoBehaviour
 	{
 		resetBall ();
 	}
-
-
+	
+	// Update is called once per frame
 	void Update ()
 	{
 		if (this.DEBUG == true) {
-			print (", Speed: " + direction.ToString ());
+			//print (", Speed: " + direction.ToString ());
 		
 		}
 	}
@@ -51,18 +50,33 @@ public class Ball : MonoBehaviour
 				print ("Hit superior/inferior wall!");
 			}
 
-			direction.y = calculateBounceIncrementAndDirectionChange (direction.y, bounceSpeedIncrement);
-			direction.y = evaluateMaxDirectionSpeed (direction.y, maxSpeed);
+			direction.y = -direction.y;
+			if (direction.y < 0) {
+				direction.y -= bounceSpeedIncrement;
+			} else {
+				direction.y += bounceSpeedIncrement;
+			}
+
+			if (direction.y > maxSpeed) {
+				direction.y = maxSpeed;
+			}
 
 		} else if (coll.gameObject.tag.Equals ("paddle")) {
 			if (this.DEBUG == true) {
 				print ("Hit worm!");
 			}
 
-			direction.x = calculateBounceIncrementAndDirectionChange (direction.x, bounceSpeedIncrement);
-			direction.x = evaluateMaxDirectionSpeed (direction.x, maxSpeed);
+			direction.x = -direction.x;
+			if (direction.x < 0) {
+				direction.x -= bounceSpeedIncrement;
+			} else {
+				direction.x += bounceSpeedIncrement;
+			}
 
-			//determine ball angle
+			if (direction.x > maxSpeed) {
+				direction.x = maxSpeed;
+			}
+
 			float paddlePosition = coll.transform.position.y;
 			float paddleHeight = coll.transform.lossyScale.y;
 			float ballPosition = transform.position.y;
@@ -71,44 +85,30 @@ public class Ball : MonoBehaviour
 
 			direction.y = paddlePart * Mathf.Abs (direction.x) * 10;
 		}
-	}
 
-	private float calculateBounceIncrementAndDirectionChange (float direction, float increment)
-	{
-		direction = -direction;
-		if (direction < 0) {
-			direction -= increment;
-		} else {
-			direction += increment;
-		}
-		return direction;
-	}
-
-	private float evaluateMaxDirectionSpeed (float direction, float max)
-	{
-		if (direction > max) {
-			direction = max;
-		}
-		return direction;
+		setDirection ();
+			
 	}
 
 	private void resetBall ()
 	{
 		GetComponent<Rigidbody2D> ().transform.position = new Vector2 (0, 0);
 		direction = new Vector2 (-speed, 0);
+		setDirection ();
+		//scoreBoard.reset ();
 	}
 
 	private void addPointToLeft ()
 	{
-		left.addScore ();
+		//scoreBoard.scoreLeft ();
 	}
 
 	private void addPointToRight ()
 	{
-		right.addScore ();
+		//scoreBoard.scoreRight ();
 	}
 
-	void FixedUpdate ()
+	private void setDirection ()
 	{
 		GetComponent<Rigidbody2D> ().velocity = direction;
 	}
