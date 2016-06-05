@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class RelativeUI : MonoBehaviour
 {
@@ -8,8 +9,11 @@ public class RelativeUI : MonoBehaviour
 	private Vector2 positionUnary;
 	private static float percentToUnitRate = 100.0f;
 
+	public int fontSize;
+
 	void Start ()
 	{
+		
 		positionUnary = new Vector2 (evaluateRatio (positionPercent.x / percentToUnitRate), evaluateRatio (positionPercent.y / percentToUnitRate));
 	}
 
@@ -19,13 +23,11 @@ public class RelativeUI : MonoBehaviour
 
 
 		Vector2 actualPosition = calculateActualVector (positionUnary, screenSize);
+		int actualFontSize = (int)screenSize.x / fontSize;
+	
+		GetComponent<RectTransform> ().anchoredPosition.Set (actualPosition.x, actualPosition.y);
 
-		//print (this.name + ": " + actualPosition.x + "," + actualPosition.y + " of screen: " + screenSize.x + "," + screenSize.y);
-		this.transform.position.Set (actualPosition.x, actualPosition.y, 0);
-		print (this.name + ": " + GetComponent<RectTransform> ().position.ToString ());
-		GetComponent<RectTransform> ().position.Set (actualPosition.x, actualPosition.y, 0);
-		print (this.name + ": " + GetComponent<RectTransform> ().position.ToString ());
-
+		GetComponent<Text> ().fontSize = actualFontSize;
 	}
 
 	private float evaluateRatio (float ratio)
