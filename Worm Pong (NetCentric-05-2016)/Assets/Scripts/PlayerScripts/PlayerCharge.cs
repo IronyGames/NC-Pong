@@ -1,15 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerCharge : MonoBehaviour {
+public class PlayerCharge : MonoBehaviour
+{
+	private bool isCharging;
 
-	// Use this for initialization
-	void Start () {
-	
+	void Start ()
+	{
+		isCharging = false;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	public void setInput (float button)
+	{
+		if (button == 0) {
+			isCharging = false;
+		} else {
+			isCharging = true;
+		}
 	}
+
 }
