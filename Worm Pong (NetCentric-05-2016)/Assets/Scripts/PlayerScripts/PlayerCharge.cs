@@ -10,7 +10,7 @@ public class PlayerCharge : MonoBehaviour
 
 	public float timeToCharge, timeChargedThrowLasts;
 	public float paddleChargingSpeedModifier;
-	private const float paddleNoChargeModifier = 1;
+	private const float paddleNotChargingSpeedModifier = 1;
 
 	void Start ()
 	{
@@ -76,6 +76,6 @@ public class PlayerCharge : MonoBehaviour
 		if (isCurrentlyCharging) {
 			return paddleChargingSpeedModifier;
 		}
-		return paddleNoChargeModifier;
+		return paddleNotChargingSpeedModifier;
 	}
 }
