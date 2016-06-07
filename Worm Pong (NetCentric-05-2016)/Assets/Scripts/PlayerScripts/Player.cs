@@ -6,11 +6,13 @@ public class Player : MonoBehaviour
 	public string inputAxis;
 	public string inputChargeButton;
 
-	public PlayerMovement movementModule;
-	public PlayerCharge chargeModule;
+	private PlayerMovement movementModule;
+	private PlayerCharge chargeModule;
 
 	void Start ()
 	{
+		movementModule = GetComponent<PlayerMovement> ();
+		chargeModule = GetComponent<PlayerCharge> ();
 	}
 
 	private void evauluateInput ()
@@ -22,15 +24,16 @@ public class Player : MonoBehaviour
 		chargeModule.setInput (charge);
 	}
 
-	private void calculateKinematics ()
+	private void updateModules ()
 	{
 		movementModule.asyncUpdate ();
+		chargeModule.asyncUpdate ();
 	}
 
 	void Update ()
 	{
 		evauluateInput ();
-		calculateKinematics ();
+		updateModules ();
 	}
 
 	void FixedUpdate ()
@@ -38,4 +41,13 @@ public class Player : MonoBehaviour
 		GetComponent<Rigidbody2D> ().velocity = movementModule.getResults ();
 	}
 
+	public bool isCharging ()
+	{
+		return chargeModule.isCharging ();
+	}
+
+	public bool isThrowingCharge ()
+	{
+		return chargeModule.isThrowingCharge ();
+	}
 }
