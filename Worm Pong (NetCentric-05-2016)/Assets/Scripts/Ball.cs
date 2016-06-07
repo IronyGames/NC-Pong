@@ -70,6 +70,15 @@ public class Ball : MonoBehaviour
 			float paddlePart = (ballPosition - paddlePosition) / paddleHeight;
 
 			direction.y = paddlePart * Mathf.Abs (direction.x) * 10;
+
+			//determine if paddle is charging
+			Player playerHit = (Player)coll.gameObject.GetComponent<Player> ();
+			if (playerHit.isCharging ()) { //player is charging. ball will go slower.
+				direction *= playerHit.getChargingModifier ();
+			} else if (playerHit.isThrowingCharge ()) { //player is throwing. ball will go faster.
+				direction *= playerHit.getThrowingModifier ();
+			}
+
 		}
 	}
 

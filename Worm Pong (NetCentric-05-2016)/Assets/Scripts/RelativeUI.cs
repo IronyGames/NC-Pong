@@ -4,28 +4,18 @@ using UnityEngine.UI;
 
 public class RelativeUI : MonoBehaviour
 {
-	public Vector2 positionPercent;
-
-	private Vector2 positionUnary;
-	private static float percentToUnitRate = 100.0f;
 
 	public int fontSize;
 
 	void Start ()
 	{
-		
-		positionUnary = new Vector2 (evaluateRatio (positionPercent.x / percentToUnitRate), evaluateRatio (positionPercent.y / percentToUnitRate));
 	}
 
 	void Update ()
 	{
 		Vector2 screenSize = new Vector2 (Screen.width, Screen.height);
 
-
-		Vector2 actualPosition = calculateActualVector (positionUnary, screenSize);
 		int actualFontSize = (int)screenSize.x / fontSize;
-	
-		GetComponent<RectTransform> ().anchoredPosition.Set (actualPosition.x, actualPosition.y);
 
 		GetComponent<Text> ().fontSize = actualFontSize;
 	}

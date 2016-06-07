@@ -6,7 +6,11 @@ public class PlayerCharge : MonoBehaviour
 	private bool isCurrentlyCharging;
 	private float chargeTimeStart, throwTimeStart;
 
+	public float ballSpeedChargingIncrement, ballSpeedThrowingIncrement;
+
 	public float timeToCharge, timeChargedThrowLasts;
+	public float paddleChargingSpeedModifier;
+	private const float paddleNoChargeModifier = 1;
 
 	void Start ()
 	{
@@ -35,24 +39,21 @@ public class PlayerCharge : MonoBehaviour
 	public void asyncUpdate ()
 	{
 		float currentTime = Time.time;
-		bool currentChargedTime = (Time.time - chargeTimeStart) >= timeToCharge;
-		bool currentThrownTime = (Time.time - throwTimeStart) >= timeChargedThrowLasts;
+		bool firstFrameCharging = chargeTimeStart == 0.0f;
+		bool firstFrameThrowing = throwTimeStart == 0.0f;
+		bool chargeIsFinished = ((Time.time - chargeTimeStart) >= timeToCharge) && !firstFrameCharging;
+		bool throwIsFinished = ((Time.time - throwTimeStart) >= timeChargedThrowLasts) && !firstFrameThrowing;
 		
 		if (isCurrentlyCharging) {
-			if (chargeTimeStart == 0.0f) { //first frame we're charging
+			if (firstFrameCharging) {
 				chargeTimeStart = currentTime;
-			} else if (currentThrownTime) {
-				//is throwing, but throw hasn't ended
-				//no charging
 			}
 		} else { //is not charging
-			if (currentChargedTime) { //charging is complete
-				if (throwTimeStart == 0.0f) {
+			if (chargeIsFinished) { //charging is complete
+				if (firstFrameThrowing) {
 					throwTimeStart = currentTime;
-				} else {
-					if (currentThrownTime) { //thrown has ended
-						resetTimers ();
-					}
+				} else if (throwIsFinished) { //thrown has ended
+					resetTimers ();
 				}
 			} else { //charging is not complete, reset
 				resetTimers ();
@@ -68,5 +69,13 @@ public class PlayerCharge : MonoBehaviour
 	public bool isThrowingCharge ()
 	{
 		return throwTimeStart != 0.0f;
+	}
+
+	public float getPaddleResults ()
+	{
+		if (isCurrentlyCharging) {
+			return paddleChargingSpeedModifier;
+		}
+		return paddleNoChargeModifier;
 	}
 }

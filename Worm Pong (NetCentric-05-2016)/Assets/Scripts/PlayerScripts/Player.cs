@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
 		chargeModule = GetComponent<PlayerCharge> ();
 	}
 
-	private void evauluateInput ()
+	private void evaluateInput ()
 	{
 		float axis = Input.GetAxisRaw (inputAxis);
 		float charge = Input.GetAxisRaw (inputChargeButton);
@@ -32,13 +32,13 @@ public class Player : MonoBehaviour
 
 	void Update ()
 	{
-		evauluateInput ();
+		evaluateInput ();
 		updateModules ();
 	}
 
 	void FixedUpdate ()
 	{
-		GetComponent<Rigidbody2D> ().velocity = movementModule.getResults ();
+		GetComponent<Rigidbody2D> ().velocity = movementModule.getResults () * chargeModule.getPaddleResults ();
 	}
 
 	public bool isCharging ()
@@ -49,5 +49,15 @@ public class Player : MonoBehaviour
 	public bool isThrowingCharge ()
 	{
 		return chargeModule.isThrowingCharge ();
+	}
+
+	public float getChargingModifier ()
+	{
+		return chargeModule.ballSpeedChargingIncrement;
+	}
+
+	public float getThrowingModifier ()
+	{
+		return chargeModule.ballSpeedThrowingIncrement;
 	}
 }
