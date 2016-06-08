@@ -73,10 +73,10 @@ public class Ball : MonoBehaviour
 
 			//determine if paddle is charging
 			Player playerHit = (Player)coll.gameObject.GetComponent<Player> ();
-			if (playerHit.isCharging ()) { //player is charging. ball will go slower.
-				direction *= playerHit.getChargingModifier ();
-			} else if (playerHit.isThrowingCharge ()) { //player is throwing. ball will go faster.
+			if (playerHit.isThrowingCharge ()) { //player is throwing. ball will go faster.
 				direction *= playerHit.getThrowingModifier ();
+			} else if (playerHit.isCharging ()) { //player is charging. ball will go slower.
+				direction *= playerHit.getChargingModifier ();
 			}
 
 		}

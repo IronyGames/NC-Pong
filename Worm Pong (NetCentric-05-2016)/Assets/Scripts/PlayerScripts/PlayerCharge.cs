@@ -12,6 +12,8 @@ public class PlayerCharge : MonoBehaviour
 	public float paddleChargingSpeedModifier;
 	private const float paddleNotChargingSpeedModifier = 1;
 
+	public Color colorWhenCharged;
+
 	void Start ()
 	{
 		resetFlags ();
@@ -41,13 +43,24 @@ public class PlayerCharge : MonoBehaviour
 		float currentTime = Time.time;
 		bool firstFrameCharging = chargeTimeStart == 0.0f;
 		bool firstFrameThrowing = throwTimeStart == 0.0f;
-		bool chargeIsFinished = ((Time.time - chargeTimeStart) >= timeToCharge) && !firstFrameCharging;
-		bool throwIsFinished = ((Time.time - throwTimeStart) >= timeChargedThrowLasts) && !firstFrameThrowing;
+		float timeCharging = (Time.time - chargeTimeStart);
+		float timeThrowing = (Time.time - throwTimeStart);
+		bool chargeIsFinished = (timeCharging >= timeToCharge) && !firstFrameCharging;
+		bool throwIsFinished = (timeThrowing >= timeChargedThrowLasts) && !firstFrameThrowing;
 		
 		if (isCurrentlyCharging) {
 			if (firstFrameCharging) {
 				chargeTimeStart = currentTime;
 			}
+			if (chargeIsFinished) {
+				print ("Charge is finished!");
+			}
+			/*
+			float currentColorChange = timeCharging / timeToCharge;
+			if (currentColorChange > 1) {
+				currentColorChange = 1;
+			}
+			*/
 		} else { //is not charging
 			if (chargeIsFinished) { //charging is complete
 				if (firstFrameThrowing) {
