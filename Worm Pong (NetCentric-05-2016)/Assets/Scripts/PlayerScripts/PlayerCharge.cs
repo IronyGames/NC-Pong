@@ -23,10 +23,16 @@ public class PlayerCharge : MonoBehaviour
 		colorUncharged = new Color (1, 1, 1);
 		chargingParticles = GetComponent<GravityParticleManager> ();
 		reset ();
-		resetTimers ();
 	}
 
 	public void reset ()
+	{
+		resetFlags ();
+		GetComponent<SpriteRenderer> ().color = colorUncharged;
+
+	}
+
+	private void resetFlags ()
 	{
 		isCurrentlyCharging = false;
 	}
@@ -38,7 +44,7 @@ public class PlayerCharge : MonoBehaviour
 
 	public void setInput (float axis)
 	{
-		reset ();
+		resetFlags ();
 		if (axis != 0) {
 			isCurrentlyCharging = true;
 		}
