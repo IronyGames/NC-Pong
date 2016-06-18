@@ -14,8 +14,14 @@ public class PlayerCharge : MonoBehaviour
 
 	public Color colorWhenCharged;
 
+	private GravityParticleManager chargingParticles;
+
+	private Color colorUncharged;
+
 	void Start ()
 	{
+		colorUncharged = new Color (1, 1, 1);
+		chargingParticles = GetComponent<GravityParticleManager> ();
 		resetFlags ();
 		resetTimers ();
 	}
@@ -47,14 +53,20 @@ public class PlayerCharge : MonoBehaviour
 		float timeThrowing = (Time.time - throwTimeStart);
 		bool chargeIsFinished = (timeCharging >= timeToCharge) && !firstFrameCharging;
 		bool throwIsFinished = (timeThrowing >= timeChargedThrowLasts) && !firstFrameThrowing;
-		
+
+		if (chargeIsFinished) {
+			GetComponent<SpriteRenderer> ().color = colorWhenCharged;
+		} else {
+			GetComponent<SpriteRenderer> ().color = colorUncharged;
+		}
+
 		if (isCurrentlyCharging) {
 			if (firstFrameCharging) {
 				chargeTimeStart = currentTime;
 			}
-			if (chargeIsFinished) {
-				print ("Charge is finished!");
-			}
+
+			chargingParticles.generateIndefinitely ();
+
 			/*
 			float currentColorChange = timeCharging / timeToCharge;
 			if (currentColorChange > 1) {
@@ -62,6 +74,9 @@ public class PlayerCharge : MonoBehaviour
 			}
 			*/
 		} else { //is not charging
+
+			chargingParticles.stop ();
+
 			if (chargeIsFinished) { //charging is complete
 				if (firstFrameThrowing) {
 					throwTimeStart = currentTime;

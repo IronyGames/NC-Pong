@@ -1,18 +1,15 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\PlayerScripts\PlayerCharge.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\GlobalVariables.cs">
     <Files>
-      <File FileName="Assets\Scripts\PlayerScripts\Player.cs" Line="41" Column="106" />
-      <File FileName="Assets\Scripts\Ball.cs" Line="79" Column="1" />
-      <File FileName="Assets\Scripts\RelativeUI.cs" Line="23" Column="5" />
-      <File FileName="Assets\Scripts\PlayerScripts\PlayerCharge.cs" Line="81" Column="2" NotebookId="1" />
-      <File FileName="Assets\Scripts\PlayerScripts\PlayerMovement.cs" Line="6" Column="5" NotebookId="1" />
+      <File FileName="Assets\Scripts\GravityParticleManager.cs" Line="46" Column="86" />
+      <File FileName="Assets\Scripts\GravityParticle.cs" Line="24" Column="55" />
+      <File FileName="Assets\GlobalVariables.cs" Line="6" Column="39" />
+      <File FileName="Assets\Scripts\PlayerScripts\PlayerCharge.cs" Line="76" Column="29" NotebookId="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="E:\IronyGAMES\UnityProjects\NC-Pong\NC-Pong\Worm Pong (NetCentric-05-2016)\Assets\Scripts\PlayerScripts\PlayerCharge.cs" line="56" column="1" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>
