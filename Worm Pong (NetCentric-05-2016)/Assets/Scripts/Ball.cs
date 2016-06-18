@@ -39,6 +39,10 @@ public class Ball : MonoBehaviour
 			winText.SetActive (false);
 			resetBall ("left");
 		}
+
+		if (Input.GetAxisRaw ("Quit") != 0) {
+			Application.Quit ();
+		}
 		
 	}
 
@@ -152,7 +156,7 @@ public class Ball : MonoBehaviour
 	private void resetBall (string toWhom)
 	{
 		GetComponent<Rigidbody2D> ().transform.position = new Vector2 (0, 0);
-		//yield return new WaitForSeconds (globalVariables.secondsBeforeBallStarts);
+
 		if (toWhom.Equals ("left")) {
 			direction = new Vector2 (-speed, 0);
 		} else {
