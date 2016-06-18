@@ -39,7 +39,7 @@ public class GravityParticleManager : MonoBehaviour
 
 	private void evaluateGeneratingNewParticles ()
 	{
-		int existingParticles = transform.childCount;
+		int existingParticles = GameObject.FindGameObjectsWithTag (name).Length;
 
 
 		float currentTime = Time.time;
@@ -54,7 +54,7 @@ public class GravityParticleManager : MonoBehaviour
 		Vector2 position = (Random.insideUnitCircle * maximumParticleCreationRadius) + center;
 
 		GameObject p = Instantiate (particle, position, Quaternion.identity) as GameObject;
-		p.transform.parent = gameObject.transform;
+		p.tag = name;
 		p.GetComponent<GravityParticle> ().setParameters (center, maximumParticleDestructionRadius);
 		Vector2 s = center - position;
 		s.Normalize ();

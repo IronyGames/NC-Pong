@@ -9,13 +9,14 @@ public class Ball : MonoBehaviour
 	public float maxSpeed;
 	public int scoreToWin;
 
-	public ScoreBoard left, right;
+	public ScoreBoard leftScoreboard, rightScoreboard;
+	public Player leftPaddle, rightPaddle;
 
 	private bool DEBUG = false;
 
 	void Start ()
 	{
-		resetBall ();
+		resetBall ("left");
 	}
 
 
@@ -34,13 +35,17 @@ public class Ball : MonoBehaviour
 				print ("Score for right!");
 			}
 			addPointToRight ();
-			resetBall ();
+			resetBall ("left");
+			leftPaddle.resetPaddle ();
+			rightPaddle.resetPaddle ();
 		} else if (other.gameObject.name.Equals ("rightWall")) {
 			if (this.DEBUG == true) {
 				print ("Score for left!");
 			}
 			addPointToLeft ();
-			resetBall ();
+			resetBall ("right");
+			leftPaddle.resetPaddle ();
+			rightPaddle.resetPaddle ();
 		}
 	}
 
@@ -101,20 +106,26 @@ public class Ball : MonoBehaviour
 		return direction;
 	}
 
-	private void resetBall ()
+	private void resetBall (string toWhom)
 	{
 		GetComponent<Rigidbody2D> ().transform.position = new Vector2 (0, 0);
-		direction = new Vector2 (-speed, 0);
+
+		if (toWhom.Equals ("left")) {
+			direction = new Vector2 (-speed, 0);
+		} else {
+			direction = new Vector2 (speed, 0);
+		}
+
 	}
 
 	private void addPointToLeft ()
 	{
-		left.addScore ();
+		leftScoreboard.addScore ();
 	}
 
 	private void addPointToRight ()
 	{
-		right.addScore ();
+		rightScoreboard.addScore ();
 	}
 
 	void FixedUpdate ()

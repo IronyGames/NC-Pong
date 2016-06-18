@@ -9,21 +9,21 @@ public class PlayerMovement : MonoBehaviour
 
 	void Start ()
 	{
-		resetFlags ();
+		reset ();
 		if (friction > 1) { //it's a percentage!
 			friction = 0.3f;
 		}
 		speed = 0;
 	}
 
-	void resetFlags ()
+	public void reset ()
 	{
 		isUp = isDown = false;
 	}
 
 	public void setInput (float axis)
 	{
-		resetFlags ();
+		reset ();
 
 		if (axis == 1) {
 			isUp = true;
