@@ -1,48 +1,38 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Player : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
-	private bool isUp, isDown;
 	private float speed, acceleration;
 	public float accelerationIncrement, friction, maxSpeed, maxAcceleration, minSpeedThreshold;
-	public KeyCode upKey, downKey;
-	public string inputAxisUsed;
-
-	// Use this for initialization
-
-	private bool DEBUG = false;
+	private bool isUp, isDown;
 
 	void Start ()
 	{
-		isUp = false;
-		isDown = false;
-		speed = 0;
+		resetFlags ();
 		if (friction > 1) { //it's a percentage!
 			friction = 0.3f;
 		}
+		speed = 0;
 	}
 
-	private void evauluateInput ()
+	void resetFlags ()
 	{
-		float axis = Input.GetAxisRaw (inputAxisUsed);
+		isUp = isDown = false;
+	}
 
-		if (DEBUG == true) {
-			print ("Axis: " + axis);
-		}
-
-		isUp = false;
-		isDown = false;
+	public void setInput (float axis)
+	{
+		resetFlags ();
 
 		if (axis == 1) {
 			isUp = true;
 		} else if (axis == -1) {
 			isDown = true;
 		}
-
 	}
 
-	private void calculateKinematics ()
+	public void asyncUpdate ()
 	{
 		//take care of input
 		if (isUp) {
@@ -71,34 +61,10 @@ public class Player : MonoBehaviour
 		if (speed < minSpeedThreshold && speed > -minSpeedThreshold) {
 			speed = 0;
 		}
-
-		if (this.DEBUG == true) {
-			print ("Acceleration: " + acceleration + ", Speed: " + speed + ", Position: " + transform.position.y);
-		}
 	}
 
-
-
-	private void OnTriggerEnter2D (Collider2D other)
+	public Vector2 getResults ()
 	{
-
+		return new Vector2 (0, speed);
 	}
-
-	private void evaluateWallTriggers ()
-	{
-
-	}
-
-	void Update ()
-	{
-		evauluateInput ();
-		calculateKinematics ();
-		evaluateWallTriggers ();
-	}
-
-	void FixedUpdate ()
-	{
-		GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, speed);
-	}
-
 }
