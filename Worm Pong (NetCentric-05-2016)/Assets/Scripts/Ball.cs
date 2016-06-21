@@ -18,6 +18,8 @@ public class Ball : MonoBehaviour
 	public float secondsBeforeBallStartsMoving;
 	private float timeSinceBallWasReset;
 
+
+
 	private bool hasGameFinished;
 
 	private bool DEBUG = false;
@@ -114,8 +116,12 @@ public class Ball : MonoBehaviour
 				Player playerHit = (Player)coll.gameObject.GetComponent<Player> ();
 				if (playerHit.isThrowingCharge ()) { //player is throwing. ball will go faster.
 					direction *= playerHit.getThrowingModifier ();
+					playerHit.playFastBounce ();
 				} else if (playerHit.isCharging ()) { //player is charging. ball will go slower.
 					direction *= playerHit.getChargingModifier ();
+					playerHit.playSlowBounce ();
+				} else {
+					playerHit.playNormalBounce ();
 				}
 
 			}
