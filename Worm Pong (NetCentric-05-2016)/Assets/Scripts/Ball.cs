@@ -60,16 +60,16 @@ public class Ball : MonoBehaviour
 				}
 				addPointToRight ();
 				resetBall ("left");
-				resetPaddles ();
 			} else if (other.gameObject.name.Equals ("rightWall")) {
 				if (this.DEBUG == true) {
 					print ("Score for left!");
 				}
 				addPointToLeft ();
 				resetBall ("right");
-				resetPaddles ();
-			}
 
+			}
+			resetPaddles ();
+			GetComponent<AudioSource> ().Play ();
 			bool leftWon = leftScoreboard.getScore () == globalVariables.scoreToWin;
 			bool rightWon = rightScoreboard.getScore () == globalVariables.scoreToWin;
 
