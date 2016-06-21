@@ -9,8 +9,11 @@ public class Player : MonoBehaviour
 	private PlayerMovement movementModule;
 	private PlayerCharge chargeModule;
 
+	private Vector2 originalPosition;
+
 	void Start ()
 	{
+		originalPosition = transform.position;
 		movementModule = GetComponent<PlayerMovement> ();
 		chargeModule = GetComponent<PlayerCharge> ();
 	}
@@ -39,6 +42,20 @@ public class Player : MonoBehaviour
 	void FixedUpdate ()
 	{
 		GetComponent<Rigidbody2D> ().velocity = movementModule.getResults () * chargeModule.getPaddleResults ();
+	}
+
+	private void resetModules ()
+	{
+		GetComponent<PlayerCharge> ().reset ();
+		GetComponent<PlayerMovement> ().reset ();
+	}
+
+	public void resetPaddle ()
+	{
+		
+		GetComponent<Rigidbody2D> ().position = originalPosition;
+		GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, 0);
+		resetModules ();
 	}
 
 	public bool isCharging ()

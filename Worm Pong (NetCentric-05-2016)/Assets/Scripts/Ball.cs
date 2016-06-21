@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Ball : MonoBehaviour
 {
@@ -9,13 +10,21 @@ public class Ball : MonoBehaviour
 	public float maxSpeed;
 	public int scoreToWin;
 
-	public ScoreBoard left, right;
+	public ScoreBoard leftScoreboard, rightScoreboard;
+	public Player leftPaddle, rightPaddle;
+	public GlobalVariables globalVariables;
+	public GameObject winText;
+	public float secondsBeforeBallStartsMoving;
+	private float timeSinceBallWasReset;
+
+	private bool hasGameFinished;
 
 	private bool DEBUG = false;
 
 	void Start ()
 	{
-		resetBall ();
+		resetBall ("left");
+		finishGame ();
 	}
 
 
@@ -25,61 +34,107 @@ public class Ball : MonoBehaviour
 			print (", Speed: " + direction.ToString ());
 		
 		}
+
+
+		if (Input.anyKeyDown && hasGameFinished) {
+			hasGameFinished = false;
+			winText.SetActive (false);
+			resetBall ("left");
+		}
+
+		if (Input.GetAxisRaw ("Quit") != 0) {
+			Application.Quit ();
+		}
+		
 	}
 
 	private void OnTriggerEnter2D (Collider2D other)
 	{
-		if (other.gameObject.name.Equals ("leftWall")) {
-			if (this.DEBUG == true) {
-				print ("Score for right!");
+		if (!hasGameFinished) {
+			if (other.gameObject.name.Equals ("leftWall")) {
+				if (this.DEBUG == true) {
+					print ("Score for right!");
+				}
+				addPointToRight ();
+				resetBall ("left");
+				resetPaddles ();
+			} else if (other.gameObject.name.Equals ("rightWall")) {
+				if (this.DEBUG == true) {
+					print ("Score for left!");
+				}
+				addPointToLeft ();
+				resetBall ("right");
+				resetPaddles ();
 			}
-			addPointToRight ();
-			resetBall ();
-		} else if (other.gameObject.name.Equals ("rightWall")) {
-			if (this.DEBUG == true) {
-				print ("Score for left!");
+
+			bool leftWon = leftScoreboard.getScore () == globalVariables.scoreToWin;
+			bool rightWon = rightScoreboard.getScore () == globalVariables.scoreToWin;
+
+			if (leftWon || rightWon) {
+				if (leftWon) {
+					winText.GetComponent<Text> ().text = "Left player wins! \nPress any key to \nrestart";
+				} else if (rightWon) {
+					winText.GetComponent<Text> ().text = "Right player wins! \nPress any key to \nrestart";
+				}
+				finishGame ();
 			}
-			addPointToLeft ();
-			resetBall ();
 		}
 	}
 
 	private void OnCollisionEnter2D (Collision2D coll)
 	{
-		if (coll.gameObject.name.Equals ("upWall") || coll.gameObject.name.Equals ("downWall")) {
-			if (this.DEBUG == true) {
-				print ("Hit superior/inferior wall!");
+		if (!hasGameFinished) {
+			if (coll.gameObject.name.Equals ("upWall") || coll.gameObject.name.Equals ("downWall")) {
+				if (this.DEBUG == true) {
+					print ("Hit superior/inferior wall!");
+				}
+
+				direction.y = calculateBounceIncrementAndDirectionChange (direction.y, bounceSpeedIncrement);
+				direction.y = evaluateMaxDirectionSpeed (direction.y, maxSpeed);
+
+			} else if (coll.gameObject.tag.Equals ("paddle")) {
+				if (this.DEBUG == true) {
+					print ("Hit worm!");
+				}
+
+				direction.x = calculateBounceIncrementAndDirectionChange (direction.x, bounceSpeedIncrement);
+				direction.x = evaluateMaxDirectionSpeed (direction.x, maxSpeed);
+
+				//determine ball angle
+				float paddlePosition = coll.transform.position.y;
+				float paddleHeight = coll.transform.lossyScale.y;
+				float ballPosition = transform.position.y;
+
+				float paddlePart = (ballPosition - paddlePosition) / paddleHeight;
+
+				direction.y = paddlePart * Mathf.Abs (direction.x) * 10;
+
+				//determine if paddle is charging
+				Player playerHit = (Player)coll.gameObject.GetComponent<Player> ();
+				if (playerHit.isThrowingCharge ()) { //player is throwing. ball will go faster.
+					direction *= playerHit.getThrowingModifier ();
+				} else if (playerHit.isCharging ()) { //player is charging. ball will go slower.
+					direction *= playerHit.getChargingModifier ();
+				}
+
 			}
-
-			direction.y = calculateBounceIncrementAndDirectionChange (direction.y, bounceSpeedIncrement);
-			direction.y = evaluateMaxDirectionSpeed (direction.y, maxSpeed);
-
-		} else if (coll.gameObject.tag.Equals ("paddle")) {
-			if (this.DEBUG == true) {
-				print ("Hit worm!");
-			}
-
-			direction.x = calculateBounceIncrementAndDirectionChange (direction.x, bounceSpeedIncrement);
-			direction.x = evaluateMaxDirectionSpeed (direction.x, maxSpeed);
-
-			//determine ball angle
-			float paddlePosition = coll.transform.position.y;
-			float paddleHeight = coll.transform.lossyScale.y;
-			float ballPosition = transform.position.y;
-
-			float paddlePart = (ballPosition - paddlePosition) / paddleHeight;
-
-			direction.y = paddlePart * Mathf.Abs (direction.x) * 10;
-
-			//determine if paddle is charging
-			Player playerHit = (Player)coll.gameObject.GetComponent<Player> ();
-			if (playerHit.isThrowingCharge ()) { //player is throwing. ball will go faster.
-				direction *= playerHit.getThrowingModifier ();
-			} else if (playerHit.isCharging ()) { //player is charging. ball will go slower.
-				direction *= playerHit.getChargingModifier ();
-			}
-
 		}
+	}
+
+	private void resetPaddles ()
+	{
+		leftPaddle.resetPaddle ();
+		rightPaddle.resetPaddle ();
+	}
+
+	private void finishGame ()
+	{
+		winText.SetActive (true);
+		direction = new Vector2 (0, 0);
+		hasGameFinished = true;
+		leftScoreboard.reset ();
+		rightScoreboard.reset ();
+		resetPaddles ();
 	}
 
 	private float calculateBounceIncrementAndDirectionChange (float direction, float increment)
@@ -101,25 +156,34 @@ public class Ball : MonoBehaviour
 		return direction;
 	}
 
-	private void resetBall ()
+	private void resetBall (string toWhom)
 	{
 		GetComponent<Rigidbody2D> ().transform.position = new Vector2 (0, 0);
-		direction = new Vector2 (-speed, 0);
+		GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, 0);
+		timeSinceBallWasReset = Time.time;
+		if (toWhom.Equals ("left")) {
+			direction = new Vector2 (-speed, 0);
+		} else {
+			direction = new Vector2 (speed, 0);
+		}
+
 	}
 
 	private void addPointToLeft ()
 	{
-		left.addScore ();
+		leftScoreboard.addScore ();
 	}
 
 	private void addPointToRight ()
 	{
-		right.addScore ();
+		rightScoreboard.addScore ();
 	}
 
 	void FixedUpdate ()
 	{
-		GetComponent<Rigidbody2D> ().velocity = direction;
+		if (timeSinceBallWasReset + secondsBeforeBallStartsMoving < Time.time) {
+			GetComponent<Rigidbody2D> ().velocity = direction;
+		}
 	}
 		
 }

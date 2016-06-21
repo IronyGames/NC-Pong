@@ -22,11 +22,17 @@ public class PlayerCharge : MonoBehaviour
 	{
 		colorUncharged = new Color (1, 1, 1);
 		chargingParticles = GetComponent<GravityParticleManager> ();
-		resetFlags ();
-		resetTimers ();
+		reset ();
 	}
 
-	void resetFlags ()
+	public void reset ()
+	{
+		resetFlags ();
+		GetComponent<SpriteRenderer> ().color = colorUncharged;
+
+	}
+
+	private void resetFlags ()
 	{
 		isCurrentlyCharging = false;
 	}
