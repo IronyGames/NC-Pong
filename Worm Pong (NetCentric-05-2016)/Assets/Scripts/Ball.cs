@@ -14,6 +14,8 @@ public class Ball : MonoBehaviour
 	public Player leftPaddle, rightPaddle;
 	public GlobalVariables globalVariables;
 	public GameObject winText;
+	public float secondsBeforeBallStartsMoving;
+	private float timeSinceBallWasReset;
 
 	private bool hasGameFinished;
 
@@ -55,16 +57,14 @@ public class Ball : MonoBehaviour
 				}
 				addPointToRight ();
 				resetBall ("left");
-				leftPaddle.resetPaddle ();
-				rightPaddle.resetPaddle ();
+				resetPaddles ();
 			} else if (other.gameObject.name.Equals ("rightWall")) {
 				if (this.DEBUG == true) {
 					print ("Score for left!");
 				}
 				addPointToLeft ();
 				resetBall ("right");
-				leftPaddle.resetPaddle ();
-				rightPaddle.resetPaddle ();
+				resetPaddles ();
 			}
 
 			bool leftWon = leftScoreboard.getScore () == globalVariables.scoreToWin;
@@ -76,22 +76,9 @@ public class Ball : MonoBehaviour
 				} else if (rightWon) {
 					winText.GetComponent<Text> ().text = "Right player wins! \nPress any key to \nrestart";
 				}
-				winText.SetActive (true);
-				direction = new Vector2 (0, 0);
-				hasGameFinished = true;
-				leftScoreboard.reset ();
-				rightScoreboard.reset ();
+				finishGame ();
 			}
 		}
-	}
-
-	private void finishGame ()
-	{
-		winText.SetActive (true);
-		direction = new Vector2 (0, 0);
-		hasGameFinished = true;
-		leftScoreboard.reset ();
-		rightScoreboard.reset ();
 	}
 
 	private void OnCollisionEnter2D (Collision2D coll)
@@ -134,6 +121,22 @@ public class Ball : MonoBehaviour
 		}
 	}
 
+	private void resetPaddles ()
+	{
+		leftPaddle.resetPaddle ();
+		rightPaddle.resetPaddle ();
+	}
+
+	private void finishGame ()
+	{
+		winText.SetActive (true);
+		direction = new Vector2 (0, 0);
+		hasGameFinished = true;
+		leftScoreboard.reset ();
+		rightScoreboard.reset ();
+		resetPaddles ();
+	}
+
 	private float calculateBounceIncrementAndDirectionChange (float direction, float increment)
 	{
 		direction = -direction;
@@ -156,7 +159,8 @@ public class Ball : MonoBehaviour
 	private void resetBall (string toWhom)
 	{
 		GetComponent<Rigidbody2D> ().transform.position = new Vector2 (0, 0);
-
+		GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, 0);
+		timeSinceBallWasReset = Time.time;
 		if (toWhom.Equals ("left")) {
 			direction = new Vector2 (-speed, 0);
 		} else {
@@ -177,7 +181,9 @@ public class Ball : MonoBehaviour
 
 	void FixedUpdate ()
 	{
-		GetComponent<Rigidbody2D> ().velocity = direction;
+		if (timeSinceBallWasReset + secondsBeforeBallStartsMoving < Time.time) {
+			GetComponent<Rigidbody2D> ().velocity = direction;
+		}
 	}
 		
 }
