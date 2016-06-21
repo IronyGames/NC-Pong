@@ -14,6 +14,7 @@ public class Ball : MonoBehaviour
 	public Player leftPaddle, rightPaddle;
 	public GlobalVariables globalVariables;
 	public GameObject winText;
+	public SpriteRenderer leftArrow, rightArrow;
 	public float secondsBeforeBallStartsMoving;
 	private float timeSinceBallWasReset;
 
@@ -127,6 +128,12 @@ public class Ball : MonoBehaviour
 		rightPaddle.resetPaddle ();
 	}
 
+	private void hideArrows ()
+	{
+		leftArrow.enabled = false;
+		rightArrow.enabled = false;
+	}
+
 	private void finishGame ()
 	{
 		winText.SetActive (true);
@@ -135,6 +142,7 @@ public class Ball : MonoBehaviour
 		leftScoreboard.reset ();
 		rightScoreboard.reset ();
 		resetPaddles ();
+		hideArrows ();
 	}
 
 	private float calculateBounceIncrementAndDirectionChange (float direction, float increment)
@@ -163,8 +171,10 @@ public class Ball : MonoBehaviour
 		timeSinceBallWasReset = Time.time;
 		if (toWhom.Equals ("left")) {
 			direction = new Vector2 (-speed, 0);
+			leftArrow.enabled = true;
 		} else {
 			direction = new Vector2 (speed, 0);
+			rightArrow.enabled = true;
 		}
 
 	}
@@ -183,6 +193,7 @@ public class Ball : MonoBehaviour
 	{
 		if (timeSinceBallWasReset + secondsBeforeBallStartsMoving < Time.time) {
 			GetComponent<Rigidbody2D> ().velocity = direction;
+			hideArrows ();
 		}
 	}
 		
