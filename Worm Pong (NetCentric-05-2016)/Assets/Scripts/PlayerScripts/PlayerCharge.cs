@@ -61,15 +61,15 @@ public class PlayerCharge : MonoBehaviour
 		bool chargeIsFinished = (timeCharging >= timeToCharge) && !firstFrameCharging;
 		bool throwIsFinished = (timeThrowing >= timeChargedThrowLasts) && !firstFrameThrowing;
 
-		if (chargeIsFinished) {//TODO
+		//evaluate visual aid
+		if (chargeIsFinished) {
 			if (isCurrentlyCharging) {
 				GetComponent<SpriteRenderer> ().color = colorWhenCharged;
 			} else {
-				float t = timeThrowing / timeChargedThrowLasts;//TODO
+				float t = timeThrowing / timeChargedThrowLasts;
 				if (firstFrameThrowing) {
 					t = 0;
 				}
-				print (t);
 				GetComponent<SpriteRenderer> ().color = Color.Lerp (colorWhenCharged, colorUncharged, t);
 			}
 		} else {
@@ -82,20 +82,9 @@ public class PlayerCharge : MonoBehaviour
 			}
 
 			chargingParticles.generateIndefinitely ();
-
-			/*
-			float cuklkkrrentColorChange = timeCharging / timeToCharge;
-			if (currentColorChange > 1) {
-				currentColorChange = 1;
-			}
-			*/
 		} else { //is not charging
-
 			chargingParticles.stop ();
-
 			if (chargeIsFinished) { //charging is complete
-				//float t = timeThrowing / timeChargedThrowLasts;//TODO
-				//GetComponent<SpriteRenderer> ().color = Color.Lerp (colorWhenCharged, colorUncharged, t);
 				if (firstFrameThrowing) {
 					throwTimeStart = currentTime;
 				} else if (throwIsFinished) { //thrown has ended

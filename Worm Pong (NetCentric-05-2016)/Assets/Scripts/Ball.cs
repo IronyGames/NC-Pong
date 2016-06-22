@@ -18,11 +18,7 @@ public class Ball : MonoBehaviour
 	public float secondsBeforeBallStartsMoving;
 	private float timeSinceBallWasReset;
 
-
-
 	private bool hasGameFinished;
-
-	private bool DEBUG = false;
 
 	void Start ()
 	{
@@ -33,12 +29,6 @@ public class Ball : MonoBehaviour
 
 	void Update ()
 	{
-		if (this.DEBUG == true) {
-			print (", Speed: " + direction.ToString ());
-		
-		}
-
-
 		if (Input.anyKeyDown && hasGameFinished) {
 			hasGameFinished = false;
 			winText.SetActive (false);
@@ -48,22 +38,15 @@ public class Ball : MonoBehaviour
 		if (Input.GetAxisRaw ("Quit") != 0) {
 			Application.Quit ();
 		}
-		
 	}
 
 	private void OnTriggerEnter2D (Collider2D other)
 	{
 		if (!hasGameFinished) {
 			if (other.gameObject.name.Equals ("leftWall")) {
-				if (this.DEBUG == true) {
-					print ("Score for right!");
-				}
 				addPointToRight ();
 				resetBall ("left");
 			} else if (other.gameObject.name.Equals ("rightWall")) {
-				if (this.DEBUG == true) {
-					print ("Score for left!");
-				}
 				addPointToLeft ();
 				resetBall ("right");
 
@@ -73,12 +56,11 @@ public class Ball : MonoBehaviour
 			bool leftWon = leftScoreboard.getScore () == globalVariables.scoreToWin;
 			bool rightWon = rightScoreboard.getScore () == globalVariables.scoreToWin;
 
-			if (leftWon || rightWon) {
-				if (leftWon) {
-					winText.GetComponent<Text> ().text = "Left player wins! \nPress any key to \nrestart";
-				} else if (rightWon) {
-					winText.GetComponent<Text> ().text = "Right player wins! \nPress any key to \nrestart";
-				}
+			if (leftWon) {
+				winText.GetComponent<Text> ().text = "Left player wins! \nPress any key to \nrestart";
+				finishGame ();
+			} else if (rightWon) {
+				winText.GetComponent<Text> ().text = "Right player wins! \nPress any key to \nrestart";
 				finishGame ();
 			}
 		}
@@ -88,18 +70,10 @@ public class Ball : MonoBehaviour
 	{
 		if (!hasGameFinished) {
 			if (coll.gameObject.name.Equals ("upWall") || coll.gameObject.name.Equals ("downWall")) {
-				if (this.DEBUG == true) {
-					print ("Hit superior/inferior wall!");
-				}
-
 				direction.y = calculateBounceIncrementAndDirectionChange (direction.y, bounceSpeedIncrement);
 				direction.y = evaluateMaxDirectionSpeed (direction.y, maxSpeed);
 
 			} else if (coll.gameObject.tag.Equals ("paddle")) {
-				if (this.DEBUG == true) {
-					print ("Hit worm!");
-				}
-
 				direction.x = calculateBounceIncrementAndDirectionChange (direction.x, bounceSpeedIncrement);
 				direction.x = evaluateMaxDirectionSpeed (direction.x, maxSpeed);
 

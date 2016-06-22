@@ -1,0 +1,35 @@
+Initialize engine version: 5.3.5f1 (960ebf59018a)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: NVIDIA GeForce GTX 760 (ID=0x1187)
+    Vendor:   NVIDIA
+    VRAM:     1989 MB
+Begin MonoManager ReloadAssembly
+Platform assembly: E:\IronyGAMES\UnityProjects\NC-Pong\NC-Pong\Worm Pong (NetCentric-05-2016)\builds\ironypong_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading E:\IronyGAMES\UnityProjects\NC-Pong\NC-Pong\Worm Pong (NetCentric-05-2016)\builds\ironypong_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: E:\IronyGAMES\UnityProjects\NC-Pong\NC-Pong\Worm Pong (NetCentric-05-2016)\builds\ironypong_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading E:\IronyGAMES\UnityProjects\NC-Pong\NC-Pong\Worm Pong (NetCentric-05-2016)\builds\ironypong_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: E:\IronyGAMES\UnityProjects\NC-Pong\NC-Pong\Worm Pong (NetCentric-05-2016)\builds\ironypong_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading E:\IronyGAMES\UnityProjects\NC-Pong\NC-Pong\Worm Pong (NetCentric-05-2016)\builds\ironypong_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: E:\IronyGAMES\UnityProjects\NC-Pong\NC-Pong\Worm Pong (NetCentric-05-2016)\builds\ironypong_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading E:\IronyGAMES\UnityProjects\NC-Pong\NC-Pong\Worm Pong (NetCentric-05-2016)\builds\ironypong_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+- Completed reload, in  0.085 seconds
+Platform assembly: E:\IronyGAMES\UnityProjects\NC-Pong\NC-Pong\Worm Pong (NetCentric-05-2016)\builds\ironypong_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: E:\IronyGAMES\UnityProjects\NC-Pong\NC-Pong\Worm Pong (NetCentric-05-2016)\builds\ironypong_Data\Managed\System.dll (this message is harmless)
+desktop: 1920x1080 60Hz; virtual: 3840x1080 at -1920,0
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+The referenced script on this Behaviour (Game Object 'leftPaddle') is missing!
+ 
+(Filename:  Line: 1655)
+
+The referenced script on this Behaviour (Game Object 'rightPaddle') is missing!
+ 
+(Filename:  Line: 1655)
+
+UnloadTime: 0.404911 ms
+Setting up 2 worker threads for Enlighten.
+  Thread -> id: 558 -> priority: 1 
+  Thread -> id: 26f0 -> priority: 1 
