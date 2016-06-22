@@ -11,6 +11,8 @@ public class Player : MonoBehaviour
 
 	private Vector2 originalPosition;
 
+	public AudioClip normalBounce, chargedBounce, slowBounceWhileCharging;
+
 	void Start ()
 	{
 		originalPosition = transform.position;
@@ -76,5 +78,20 @@ public class Player : MonoBehaviour
 	public float getThrowingModifier ()
 	{
 		return chargeModule.ballSpeedThrowingIncrement;
+	}
+
+	public void playNormalBounce ()
+	{
+		GetComponent<AudioSource> ().PlayOneShot (normalBounce);
+	}
+
+	public void playSlowBounce ()
+	{
+		GetComponent<AudioSource> ().PlayOneShot (slowBounceWhileCharging);
+	}
+
+	public void playFastBounce ()
+	{
+		GetComponent<AudioSource> ().PlayOneShot (chargedBounce);
 	}
 }

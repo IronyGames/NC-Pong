@@ -14,8 +14,11 @@ public class Ball : MonoBehaviour
 	public Player leftPaddle, rightPaddle;
 	public GlobalVariables globalVariables;
 	public GameObject winText;
+	public SpriteRenderer leftArrow, rightArrow;
 	public float secondsBeforeBallStartsMoving;
 	private float timeSinceBallWasReset;
+
+
 
 	private bool hasGameFinished;
 
@@ -57,16 +60,16 @@ public class Ball : MonoBehaviour
 				}
 				addPointToRight ();
 				resetBall ("left");
-				resetPaddles ();
 			} else if (other.gameObject.name.Equals ("rightWall")) {
 				if (this.DEBUG == true) {
 					print ("Score for left!");
 				}
 				addPointToLeft ();
 				resetBall ("right");
-				resetPaddles ();
-			}
 
+			}
+			resetPaddles ();
+			GetComponent<AudioSource> ().Play ();
 			bool leftWon = leftScoreboard.getScore () == globalVariables.scoreToWin;
 			bool rightWon = rightScoreboard.getScore () == globalVariables.scoreToWin;
 
@@ -113,8 +116,12 @@ public class Ball : MonoBehaviour
 				Player playerHit = (Player)coll.gameObject.GetComponent<Player> ();
 				if (playerHit.isThrowingCharge ()) { //player is throwing. ball will go faster.
 					direction *= playerHit.getThrowingModifier ();
+					playerHit.playFastBounce ();
 				} else if (playerHit.isCharging ()) { //player is charging. ball will go slower.
 					direction *= playerHit.getChargingModifier ();
+					playerHit.playSlowBounce ();
+				} else {
+					playerHit.playNormalBounce ();
 				}
 
 			}
@@ -127,6 +134,12 @@ public class Ball : MonoBehaviour
 		rightPaddle.resetPaddle ();
 	}
 
+	private void hideArrows ()
+	{
+		leftArrow.enabled = false;
+		rightArrow.enabled = false;
+	}
+
 	private void finishGame ()
 	{
 		winText.SetActive (true);
@@ -135,6 +148,7 @@ public class Ball : MonoBehaviour
 		leftScoreboard.reset ();
 		rightScoreboard.reset ();
 		resetPaddles ();
+		hideArrows ();
 	}
 
 	private float calculateBounceIncrementAndDirectionChange (float direction, float increment)
@@ -163,8 +177,10 @@ public class Ball : MonoBehaviour
 		timeSinceBallWasReset = Time.time;
 		if (toWhom.Equals ("left")) {
 			direction = new Vector2 (-speed, 0);
+			leftArrow.enabled = true;
 		} else {
 			direction = new Vector2 (speed, 0);
+			rightArrow.enabled = true;
 		}
 
 	}
@@ -183,6 +199,7 @@ public class Ball : MonoBehaviour
 	{
 		if (timeSinceBallWasReset + secondsBeforeBallStartsMoving < Time.time) {
 			GetComponent<Rigidbody2D> ().velocity = direction;
+			hideArrows ();
 		}
 	}
 		

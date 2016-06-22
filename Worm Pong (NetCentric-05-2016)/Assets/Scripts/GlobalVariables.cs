@@ -5,3 +5,4 @@ public class GlobalVariables : MonoBehaviour
 {
 	public int scoreToWin;
 }
+	
